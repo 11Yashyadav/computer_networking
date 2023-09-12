@@ -1,0 +1,33 @@
+import java.util.*;
+import java.lang.*;
+class cnlab1{
+    public static void main(String[] args) {      
+    System.out.println("");
+    Scanner sn=new Scanner(System.in);
+    String sen;
+    int ukey,ky=3;
+    System.out.println("Please enter your message");
+    sen =sn.next();
+    System.out.println("Please enter the key::");
+        ukey=sn.nextInt();
+        System.out.println("-----------------------------Encreption of data-----------------------------------");
+        int st,ms;
+    for(int i=0;i<sen.length();i++){
+        st=(sen.charAt(i))+ukey;
+        //System.out.println(st);
+          if(st>=97 && st<=122 && st>= 65 && st<=90){
+                System.out.println(Integer.toString(st));
+          }
+          else{
+            ms=st-26;
+            System.out.println(Integer.toString(ms));
+    }
+}
+     if(ukey==ky){
+            System.out.println(sen);
+        }
+        else{
+            System.out.println("************* wrong key!!! ***************");
+        }
+    }
+}
