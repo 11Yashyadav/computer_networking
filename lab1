@@ -1,33 +1,52 @@
 import java.util.*;
-import java.lang.*;
-class cnlab1{
-    public static void main(String[] args) {      
-    System.out.println("");
+class Encript{
+    String mystr;
+     int ct;
+     char c;
+     int key=3,userkey;
     Scanner sn=new Scanner(System.in);
-    String sen;
-    int ukey,ky=3;
-    System.out.println("Please enter your message");
-    sen =sn.next();
+void input(){
+   System.out.println("Please enter message::");
+    mystr=sn.next();
+    mystr.toLowerCase();
+    System.out.println("-----------------------------Encryption of data-----------------------------------");
+    System.out.print("Cipher text::");
+    for(int i=0;i<mystr.length();i++){
+      ct=(Integer.valueOf(mystr.charAt(i))+key);
+      if(ct>=97 && ct<=122 ){
+         c=(char)(ct);
+        System.out.print((c));
+      }
+      if(ct>122){
+        c=(char)(ct-26);
+        System.out.print(c);
+      }
+    }
+    System.out.println();
+    System.out.println("-----------------------------Decryption of data-----------------------------------");
     System.out.println("Please enter the key::");
-        ukey=sn.nextInt();
-        System.out.println("-----------------------------Encreption of data-----------------------------------");
-        int st,ms;
-    for(int i=0;i<sen.length();i++){
-        st=(sen.charAt(i))+ukey;
-        //System.out.println(st);
-          if(st>=97 && st<=122 && st>= 65 && st<=90){
-                System.out.println(Integer.toString(st));
-          }
-          else{
-            ms=st-26;
-            System.out.println(Integer.toString(ms));
+    userkey=sn.nextInt();
+    if(userkey==key){
+      System.out.print("Message::");
+      for(int i=0;i<mystr.length();i++){
+      ct=(Integer.valueOf(mystr.charAt(i))+key);
+      if(ct>=97 && ct<=122 ){
+         c=(char)(ct-key);
+        System.out.print((c));
+      }
+      if(ct>122){
+        c=(char)(ct-key);
+        System.out.print(c);
+      }
     }
-}
-     if(ukey==ky){
-            System.out.println(sen);
-        }
-        else{
-            System.out.println("************* wrong key!!! ***************");
-        }
     }
+    else
+    System.out.println("***************** Wrong Key ********************");
+  }
 }
+public class practice{
+    public static void main(String[] args) {
+    Encript obj=new Encript();
+    obj.input();
+    }
+   }
