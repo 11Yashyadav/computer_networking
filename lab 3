@@ -1,25 +1,43 @@
-
-#include <stdio.h>
-#include <string.h>
-int main()
+#include<stdio.h>
+#include<string.h>
+void main()
 {
-char data[100], stuffedData[200];
-int i, count = 0, j = 0;
-printf("Enter the data: ");
-scanf("%s", data);
-for(i = 0; i < strlen(data); i++)
-    {
-        if(data[i] == '1')
-    {
-        count++;
-        stuffedData[j++] = data[i];
+    int a[20],b[30],i=0,j=0,k,count=1,n;
+    printf("Please neter the size of Expression:");
+    scanf("%d",&n);
+    printf("Enter enter the expression ::");
+    for(i=0; i<n; i++)
+        scanf("%d",&a[i]);
+ printf("Orignal Expression :");
+    for(i=0; i<j; i++)
+        printf("%d",a[i]);
 }
-else
-{
-    count = 0; stuffedData[j++] = data[i]; }
-if(count == 5) { count = 0; stuffedData[j++] = '0';
-} }
-stuffedData[j] = '\0';
-printf("Data after bit stuffing: %s\n", stuffedData);
- return 0;
- }
+    while(i<n)
+    {
+        if(a[i]==1)
+        {
+            b[j]=a[i];
+            for(k=i+1; a[k]==1 && k<n && count<5; k++)
+            {
+                j++;
+                b[j]=a[k];
+                count++;
+                if(count==5)
+                {
+                    j++;
+                    b[j]=0;
+                }
+                i=k;
+            }
+        }
+        else
+        {
+            b[j]=a[i];
+        }
+        i++;
+        j++;
+    }
+    printf("After Bit Stuffing :");
+    for(i=0; i<j; i++)
+        printf("%d",b[i]);
+}
