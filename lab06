@@ -1,65 +1,62 @@
-// Dijkstra's Algorithm in C
-
 #include <stdio.h>
-#define INFI 9999
-#define MAX 10
-void Dijkstra(int Graph[MAX][MAX], int n, int start);
-
-void Dijkstra(int Graph[MAX][MAX], int n, int start) {
-  int cost[MAX][MAX], distance[MAX], pred[MAX];
-  int visited[MAX], count, mindistance, nextnode,i,j;
-
-  for (i = 0; i < n; i++)
-    for (j = 0; j < n; j++)
-      if (Graph[i][j] == 0)
-        cost[i][j] = INFI;
-      else
-        cost[i][j] = Graph[i][j];
-  for (i = 0; i < n; i++) {
-    distance[i] = cost[start][i];
-    pred[i] = start;
-    visited[i] = 0;
-  }
-
-  distance[start] = 0;
-  visited[start] = 1;
-  count = 1;
-
-  while (count < n - 1) {
-    mindistance = INFI;
-
-    for (i = 0; i < n; i++)
-      if (distance[i] < mindistance && !visited[i]) {
-        mindistance = distance[i];
-        nextnode = i;
-      }
-
-    visited[nextnode] = 1;
-    for (i = 0; i < n; i++)
-      if (!visited[i])
-        if (mindistance + cost[nextnode][i] < distance[i]) {
-          distance[i] = mindistance + cost[nextnode][i];
-          pred[i] = nextnode;
-        }
-    count++;
-  }
-  for (i = 0; i < n; i++)
-    if (i != start) {
-      printf("\nDistance from source to %d: %d",i+1, distance[i]);
-    }
+#include <limits.h>
+#define V 6
+int minDistance(int dist[], int sptSet[])
+{
+ int min = INT_MAX, min_index;
+ for (int v = 0; v < V; v++)
+ {
+ if (sptSet[v] == 0 && dist[v] <= min)
+ {
+ min = dist[v];
+ min_index = v;
+ }
+ }
+ return min_index;
 }
-int main() {
-  int Graph[MAX][MAX], i, j, n, u;
-  printf("Please enter the number of node ::");
-  scanf("%d",&n);
-  for(i=0;i<n;i++){
-    for(j=0;j<n;j++){
-        printf("\nplease enter the distance between %d and %d ::",i+1,j+1);
-        scanf("%d",&Graph[i][j]);
-    }
-  }
-  u = 0;
-  Dijkstra(Graph, n, u);
-
-  return 0;
+void printSolution(int dist[])
+{
+ printf("Vertex \t Distance from Source\n");
+ for (int i = 0; i < V; i++)
+ {
+ printf("%d \t %d\n", i, dist[i]);
+ }
+}
+void dijkstra(int graph[V][V], int src)
+{
+ int dist[V];
+ int sptSet[V];
+ for (int i = 0; i < V; i++)
+ {
+ dist[i] = INT_MAX;
+ sptSet[i] = 0;
+ }
+ dist[src] = 0;
+ for (int count = 0; count < V - 1; count++)
+ {
+ int u = minDistance(dist, sptSet);
+ sptSet[u] = 1;
+ for (int v = 0; v < V; v++)
+ {
+ if (!sptSet[v] && graph[u][v] && dist[u] != INT_MAX &&
+ dist[u] + graph[u][v] < dist[v])
+ {
+ dist[v] = dist[u] + graph[u][v];
+ }
+ }
+ }
+ printSolution(dist);
+}
+int main()
+{
+ int graph[V][V] = {
+ {0, 1, 5, 0, 0, 0},
+ {0, 0, 2, 6, 0, 0},
+ {0, 0, 0, 0, 3, 0},
+ {0, 0, 0, 0, 3, 1},
+ {0, 0, 0, 2, 0, 5},
+ {0, 0, 0, 0, 0, 0}};
+ int source = 0;
+ dijkstra(graph, source);
+ return 0;
 }
