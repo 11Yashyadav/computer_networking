@@ -1,89 +1,56 @@
-Server file
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.FileOutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
-public class Server {
-private static DataOutputStream dataOutputStream = null;
-private static DataInputStream dataInputStream = null;
-public static void main(String[] args)
-{
-try (ServerSocket serverSocket= new ServerSocket(900)) {
-System.out.println("Server is Starting in Port 900");
-Socket clientSocket = serverSocket.accept();
-System.out.println("Connected");
-dataInputStream = new DataInputStream(
-clientSocket.getInputStream());
-dataOutputStream = new DataOutputStream(
-clientSocket.getOutputStream());
-receiveFile("Experiment no 5.pdf");
-dataInputStream.close();
-dataOutputStream.close();
-clientSocket.close();
-}
-catch (Exception e) {
-e.printStackTrace();
-}
-}
-private static void receiveFile(String fileName)
-throws Exception
-{
-int bytes = 0;
-FileOutputStream fileOutputStream
-= new FileOutputStream(fileName);
-long size= dataInputStream.readLong();
-byte[] buffer = new byte[4 * 1024];
-while (size >0
-&&(bytes = dataInputStream.read(buffer, 0,
-(int)Math.min(buffer.length, size)))
-!= -1) {
-fileOutputStream.write(buffer, 0, bytes);
-size -= bytes;
-}
-System.out.println("File is Received");
-fileOutputStream.close();
-}
+import java.io.*;
+
+import java.net.*;
+
+public class MyServer {
+
+public static void main(String[] args){
+
+try{
+
+ServerSocket ss=new ServerSocket(6666);
+
+Socket s=ss.accept();//establishes connection
+
+DataInputStream dis=new DataInputStream(s.getInputStream());
+
+String str=(String)dis.readUTF();
+
+System.out.println("message= "+str);
+
+ss.close();
+
+}catch(Exception e){System.out.println(e);}
+
 }
 
-Client file
+}
+
+File: MyClient.java
 
 import java.io.*;
-import java.net.Socket;
-public class Client {
-private static DataOutputStream dataOutputStream = null;
-private static DataInputStream dataInputStream = null;
-public static void main(String[] args)
-{
-try (Socket socket = new Socket("localhost", 900)) {
-dataInputStream = new DataInputStream(
-socket.getInputStream());
-dataOutputStream = new DataOutputStream(
-socket.getOutputStream());
-System.out.println("Sending the File to the Server");
-// Call SendFile Method
-sendFile("C:/Users/YASH/Downloads/Experiment no 5.pdf");
-dataInputStream.close();
-dataInputStream.close();
+
+import java.net.*;
+
+public class MyClient {
+
+public static void main(String[] args) {
+
+try{
+
+Socket s=new Socket("localhost",6666);
+
+DataOutputStream dout=new DataOutputStream(s.getOutputStream());
+
+dout.writeUTF("Hello Server");
+
+dout.flush();
+
+dout.close();
+s.close();
+
+}catch(Exception e){System.out.println(e);}
+
 }
-catch (Exception e) {
-e.printStackTrace();
-}
-}
-private static void sendFile(String path)
-throws Exception
-{
-int bytes = 0;
-File file = new File(path);
-FileInputStream fileInputStream
-= new FileInputStream(file);
-dataOutputStream.writeLong(file.length());
-byte[] buffer = new byte[4 * 1024];
-while ((bytes = fileInputStream.read(buffer))
-!= -1) {
-dataOutputStream.write(buffer, 0, bytes);
-dataOutputStream.flush();
-}
-fileInputStream.close();
-}
+
 }
